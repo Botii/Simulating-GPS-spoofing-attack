@@ -72,9 +72,9 @@ Follow these steps to compile and run ArduCopter:
     takeoff 10
     ```
 6. **Run the Spoof Script:**
-    - Open a new terminal and execute the spoofing script found in the first implementation folder.
+    - Open a new terminal and execute the spoofing script spoofingScripts/FirstImplementation/noController.py. 
 
-> **Note:** To run the first implementation with a controller, please run the spoofing script that does not require a controller in step 6.
+> **Note:** To run the first implementation with a controller, please run spoofingScripts/FirstImplementation/withController.py.
 
 ### Auto Mission Experiment
 
@@ -108,7 +108,7 @@ After takeoff (step 5), you can switch to auto mode:
     ```
 4. **Reboot the System.**
 5. **Controller Option:**
-    - If you do not have a PS4 controller, use the no-controller spoofing script provided in the second implementation folder.
+    - If you do not have a PS4 controller, use spoofingScripts/SeconImplementation/noController.py.
 6. **Wait** until all configurations and initialization processes are complete.
 7. **Arm the Drone with Throttle 10:**
     ```bash
@@ -125,7 +125,7 @@ After takeoff (step 5), you can switch to auto mode:
 10. **Start Spoofing:**
     - Right-click on the map and select **startSpoof**.
 
-> **Note:** If you wish to use a PS4 controller, connect it before starting the second implementation and follow the same steps.
+> **Note:** If you wish to use a PS4 controller, connect it before starting the second implementation and run spoofingScripts/SeconImplementation/withController.py
 
 ---
 
