@@ -17,6 +17,8 @@ This project demonstrates GPS spoofing using ArduCopter, MAVLink, and QGroundCon
 - **DroneKit**
 - **MAVProxy**
 
+**Note:** All spoofing scripts in this project should be run using `python3`.
+
 ---
 
 ## Compiling and Running ArduCopter
@@ -93,6 +95,8 @@ After takeoff (step 5), you can switch to auto mode:
 ---
 
 ## Implementation 2: GPS Spoofing with PS4 Controller (or No Controller)
+
+**Important:** The second implementation requires modifications to the fakegps module in MAVProxy. Replace the file located at `/home/ubuntu/.local/lib/python3.10/site-packages/MAVProxy/modules/mavproxy_fakegps.py` with the spoofing script found in `spoofingScripts/SecondImplementation`. 
 
 1. **Launch the Simulation:**
     ```bash
