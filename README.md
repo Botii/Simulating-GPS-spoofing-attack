@@ -1,160 +1,134 @@
-# ArduPilot Project
+# GPS Spoofing Project
 
-<a href="https://ardupilot.org/discord"><img src="https://img.shields.io/discord/674039678562861068.svg" alt="Discord">
+This project demonstrates GPS spoofing using ArduCopter, MAVLink, and QGroundControl. It is designed to run on Ubuntu 22.04 hosted on a virtual machine (via UTM) on a MacBook Pro 2021 with an M1 chip.
 
-[![Test Copter](https://github.com/ArduPilot/ardupilot/workflows/test%20copter/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_copter.yml) [![Test Plane](https://github.com/ArduPilot/ardupilot/workflows/test%20plane/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_plane.yml) [![Test Rover](https://github.com/ArduPilot/ardupilot/workflows/test%20rover/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_rover.yml) [![Test Sub](https://github.com/ArduPilot/ardupilot/workflows/test%20sub/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_sub.yml) [![Test Tracker](https://github.com/ArduPilot/ardupilot/workflows/test%20tracker/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_tracker.yml)
+## Prerequisites
 
-[![Test AP_Periph](https://github.com/ArduPilot/ardupilot/workflows/test%20ap_periph/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_sitl_periph.yml) [![Test Chibios](https://github.com/ArduPilot/ardupilot/workflows/test%20chibios/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_chibios.yml) [![Test Linux SBC](https://github.com/ArduPilot/ardupilot/workflows/test%20Linux%20SBC/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_linux_sbc.yml) [![Test Replay](https://github.com/ArduPilot/ardupilot/workflows/test%20replay/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_replay.yml)
+### Hardware
+- **PS4 Controller** (optional)
 
-[![Test Unit Tests](https://github.com/ArduPilot/ardupilot/workflows/test%20unit%20tests%20and%20sitl%20building/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_unit_tests.yml)[![test size](https://github.com/ArduPilot/ardupilot/actions/workflows/test_size.yml/badge.svg)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_size.yml)
+### Software
+- A compiled and running version of **ArduCopter**
+- **QGroundControl**
+- **MAVLink**
 
-[![Test Environment Setup](https://github.com/ArduPilot/ardupilot/actions/workflows/test_environment.yml/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_environment.yml)
+### Libraries
+- **PyGame**
+- **DroneKit**
+- **MAVProxy**
 
-[![Cygwin Build](https://github.com/ArduPilot/ardupilot/actions/workflows/cygwin_build.yml/badge.svg)](https://github.com/ArduPilot/ardupilot/actions/workflows/cygwin_build.yml) [![Macos Build](https://github.com/ArduPilot/ardupilot/actions/workflows/macos_build.yml/badge.svg)](https://github.com/ArduPilot/ardupilot/actions/workflows/macos_build.yml)
+---
 
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/5331/badge.svg)](https://scan.coverity.com/projects/ardupilot-ardupilot)
+## Compiling and Running ArduCopter
 
-[![Test Coverage](https://github.com/ArduPilot/ardupilot/actions/workflows/test_coverage.yml/badge.svg?branch=master)](https://github.com/ArduPilot/ardupilot/actions/workflows/test_coverage.yml)
+Follow these steps to compile and run ArduCopter:
 
-[![Autotest Status](https://autotest.ardupilot.org/autotest-badge.svg)](https://autotest.ardupilot.org/)
+1. **Clone the Repository:**
+    ```bash
+    git clone --recurse-submodules https://github.com/Botii/gpsSpoofingProject
+    ```
+2. **Navigate to the Project Directory:**
+    ```bash
+    cd gpsSpoofingProject
+    ```
+3. **Install Prerequisites:**
+    ```bash
+    Tools/environment_install/install-prereqs-ubuntu.sh -y
+    ```
+4. **Update Environment Variables:**
+    ```bash
+    . ~/.profile
+    ```
+5. **Configure the Build for Your Board (e.g., MatekH743):**
+    ```bash
+    ./waf configure --board MatekH743
+    ```
+6. **Compile ArduCopter:**
+    ```bash
+    ./waf copter
+    ```
 
-ArduPilot is the most advanced, full-featured, and reliable open source autopilot software available.
-It has been under development since 2010 by a diverse team of professional engineers, computer scientists, and community contributors.
-Our autopilot software is capable of controlling almost any vehicle system imaginable, from conventional airplanes, quad planes, multi-rotors, and helicopters to rovers, boats, balance bots, and even submarines.
-It is continually being expanded to provide support for new emerging vehicle types.
+> **Tip:** Run `./waf clean` before switching experiments, then repeat steps 5 and 6 to ensure a fresh build.
 
-## The ArduPilot project is made up of: ##
+---
 
-- ArduCopter: [code](https://github.com/ArduPilot/ardupilot/tree/master/ArduCopter), [wiki](https://ardupilot.org/copter/index.html)
+## Implementation 1: GPS Spoofing (No Controller)
 
-- ArduPlane: [code](https://github.com/ArduPilot/ardupilot/tree/master/ArduPlane), [wiki](https://ardupilot.org/plane/index.html)
+1. **Launch the Simulation:**
+    ```bash
+    sim_vehicle.py -v ArduCopter -L KSFO --console --map --out=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551
+    ```
+2. **Wait** for all arming checks to complete and for the copter to initialize.
+3. **Arm the Drone with Throttle 10:**
+    ```bash
+    arm throttle 10
+    ```
+4. **Set Flight Mode to Guided:**
+    ```bash
+    mode guided
+    ```
+5. **Initiate Takeoff (e.g., 10 meters):**
+    ```bash
+    takeoff 10
+    ```
+6. **Run the Spoof Script:**
+    - Open a new terminal and execute the spoofing script found in the first implementation folder.
 
-- Rover: [code](https://github.com/ArduPilot/ardupilot/tree/master/Rover), [wiki](https://ardupilot.org/rover/index.html)
+> **Note:** To run the first implementation with a controller, please run the spoofing script that does not require a controller in step 6.
 
-- ArduSub : [code](https://github.com/ArduPilot/ardupilot/tree/master/ArduSub), [wiki](http://ardusub.com/)
+### Auto Mission Experiment
 
-- Antenna Tracker : [code](https://github.com/ArduPilot/ardupilot/tree/master/AntennaTracker), [wiki](https://ardupilot.org/antennatracker/index.html)
+After takeoff (step 5), you can switch to auto mode:
 
-## User Support & Discussion Forums ##
+- **Change to Auto Mode:**
+    ```bash
+    mode auto
+    ```
+- **If the Drone Crashes (often in loiter mode), reset throttle using:**
+    ```bash
+    rc 3 1500
+    ```
+- **Mission Upload:** Missions can be uploaded to the copter via QGroundControl.
 
-- Support Forum: <https://discuss.ardupilot.org/>
+---
 
-- Community Site: <https://ardupilot.org>
+## Implementation 2: GPS Spoofing with PS4 Controller (or No Controller)
 
-## Developer Information ##
+1. **Launch the Simulation:**
+    ```bash
+    sim_vehicle.py -v ArduCopter -L KSFO --console --map --out=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551
+    ```
+2. **Switch Communication Protocol to MAVLink:**
+    ```bash
+    param set GPS1_TYPE 14
+    ```
+3. **Load the Fake GPS Module:**
+    ```bash
+    load module fakegps
+    ```
+4. **Reboot the System.**
+5. **Controller Option:**
+    - If you do not have a PS4 controller, use the no-controller spoofing script provided in the second implementation folder.
+6. **Wait** until all configurations and initialization processes are complete.
+7. **Arm the Drone with Throttle 10:**
+    ```bash
+    arm throttle 10
+    ```
+8. **Set Flight Mode to Guided:**
+    ```bash
+    mode guided
+    ```
+9. **Initiate Takeoff (e.g., 10 meters):**
+    ```bash
+    takeoff 10
+    ```
+10. **Start Spoofing:**
+    - Right-click on the map and select **startSpoof**.
 
-- Github repository: <https://github.com/ArduPilot/ardupilot>
+> **Note:** If you wish to use a PS4 controller, connect it before starting the second implementation and follow the same steps.
 
-- Main developer wiki: <https://ardupilot.org/dev/>
+---
 
-- Developer discussion: <https://discuss.ardupilot.org>
+## Viewing Telemetry Data
 
-- Developer chat: <https://discord.com/channels/ardupilot>
-
-## Top Contributors ##
-
-- [Flight code contributors](https://github.com/ArduPilot/ardupilot/graphs/contributors)
-- [Wiki contributors](https://github.com/ArduPilot/ardupilot_wiki/graphs/contributors)
-- [Most active support forum users](https://discuss.ardupilot.org/u?order=post_count&period=quarterly)
-- [Partners who contribute financially](https://ardupilot.org/about/Partners)
-
-## How To Get Involved ##
-
-- The ArduPilot project is open source and we encourage participation and code contributions: [guidelines for contributors to the ardupilot codebase](https://ardupilot.org/dev/docs/contributing.html)
-
-- We have an active group of Beta Testers to help us improve our code: [release procedures](https://ardupilot.org/dev/docs/release-procedures.html)
-
-- Desired Enhancements and Bugs can be posted to the [issues list](https://github.com/ArduPilot/ardupilot/issues).
-
-- Help other users with log analysis in the [support forums](https://discuss.ardupilot.org/)
-
-- Improve the wiki and chat with other [wiki editors on Discord #documentation](https://discord.com/channels/ardupilot)
-
-- Contact the developers on one of the [communication channels](https://ardupilot.org/copter/docs/common-contact-us.html)
-
-## License ##
-
-The ArduPilot project is licensed under the GNU General Public
-License, version 3.
-
-- [Overview of license](https://ardupilot.org/dev/docs/license-gplv3.html)
-
-- [Full Text](https://github.com/ArduPilot/ardupilot/blob/master/COPYING.txt)
-
-## Maintainers ##
-
-ArduPilot is comprised of several parts, vehicles and boards. The list below
-contains the people that regularly contribute to the project and are responsible
-for reviewing patches on their specific area.
-
-- [Andrew Tridgell](https://github.com/tridge):
-  - ***Vehicle***: Plane, AntennaTracker
-  - ***Board***: Pixhawk, Pixhawk2, PixRacer
-- [Francisco Ferreira](https://github.com/oxinarf):
-  - ***Bug Master***
-- [Grant Morphett](https://github.com/gmorph):
-  - ***Vehicle***: Rover
-- [Willian Galvani](https://github.com/williangalvani):
-  - ***Vehicle***: Sub
-  - ***Board***: Navigator
-- [Michael du Breuil](https://github.com/WickedShell):
-  - ***Subsystem***: Batteries
-  - ***Subsystem***: GPS
-  - ***Subsystem***: Scripting
-- [Peter Barker](https://github.com/peterbarker):
-  - ***Subsystem***: DataFlash, Tools
-- [Randy Mackay](https://github.com/rmackay9):
-  - ***Vehicle***: Copter, Rover, AntennaTracker
-- [Siddharth Purohit](https://github.com/bugobliterator):
-  - ***Subsystem***: CAN, Compass
-  - ***Board***: Cube*
-- [Tom Pittenger](https://github.com/magicrub):
-  - ***Vehicle***: Plane
-- [Bill Geyer](https://github.com/bnsgeyer):
-  - ***Vehicle***: TradHeli
-- [Emile Castelnuovo](https://github.com/emilecastelnuovo):
-  - ***Board***: VRBrain
-- [Georgii Staroselskii](https://github.com/staroselskii):
-  - ***Board***: NavIO
-- [Gustavo José de Sousa](https://github.com/guludo):
-  - ***Subsystem***: Build system
-- [Julien Beraud](https://github.com/jberaud):
-  - ***Board***: Bebop & Bebop 2
-- [Leonard Hall](https://github.com/lthall):
-  - ***Subsystem***: Copter attitude control and navigation
-- [Matt Lawrence](https://github.com/Pedals2Paddles):
-  - ***Vehicle***: 3DR Solo & Solo based vehicles
-- [Matthias Badaire](https://github.com/badzz):
-  - ***Subsystem***: FRSky
-- [Mirko Denecke](https://github.com/mirkix):
-  - ***Board***: BBBmini, BeagleBone Blue, PocketPilot
-- [Paul Riseborough](https://github.com/priseborough):
-  - ***Subsystem***: AP_NavEKF2
-  - ***Subsystem***: AP_NavEKF3
-- [Víctor Mayoral Vilches](https://github.com/vmayoral):
-  - ***Board***: PXF, Erle-Brain 2, PXFmini
-- [Amilcar Lucas](https://github.com/amilcarlucas):
-  - ***Subsystem***: Marvelmind
-- [Samuel Tabor](https://github.com/samuelctabor):
-  - ***Subsystem***: Soaring/Gliding
-- [Henry Wurzburg](https://github.com/Hwurzburg):
-  - ***Subsystem***: OSD
-  - ***Site***: Wiki
-- [Peter Hall](https://github.com/IamPete1):
-  - ***Vehicle***: Tailsitters
-  - ***Vehicle***: Sailboat
-  - ***Subsystem***: Scripting
-- [Andy Piper](https://github.com/andyp1per):
-  - ***Subsystem***: Crossfire
-  - ***Subsystem***: ESC
-  - ***Subsystem***: OSD
-  - ***Subsystem***: SmartAudio
-- [Alessandro Apostoli ](https://github.com/yaapu):
-  - ***Subsystem***: Telemetry
-  - ***Subsystem***: OSD
-- [Rishabh Singh ](https://github.com/rishabsingh3003):
-  - ***Subsystem***: Avoidance/Proximity
-- [David Bussenschutt ](https://github.com/davidbuzz):
-  - ***Subsystem***: ESP32,AP_HAL_ESP32
-- [Charles Villard ](https://github.com/Silvanosky):
-  - ***Subsystem***: ESP32,AP_HAL_ESP32
+For real-time telemetry data, please install and run **QGroundControl**. To install, please follow the steps provided at [Installing QGroundControl on Ubuntu ARM64 using Flatpak](https://github.com/sidharthmohannair/Installing-QGroundControl-on-Ubuntu-ARM64-using-Flatpak).
