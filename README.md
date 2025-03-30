@@ -77,6 +77,7 @@ Follow these steps to compile and run ArduCopter:
     - Open a new terminal and execute the spoofing script spoofingScripts/FirstImplementation/noController.py. 
 
 > **Note:** To run the first implementation with a controller, please run spoofingScripts/FirstImplementation/withController.py.
+> > **Tip:** Run the following commands to remove the offsets from the previous experiement, "param set SIM_GPS1_GLTCH_X 0" and "param set SIM_GPS1_GLTCH_Y 0"
 
 ### Auto Mission Experiment
 
