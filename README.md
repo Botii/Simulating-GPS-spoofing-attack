@@ -133,7 +133,7 @@ After takeoff (step 5), you can switch to auto mode:
 > **Note:** If you wish to use a PS4 controller, connect it before starting the second implementation and run spoofingScripts/SeconImplementation/withController.py
 
 
-> ## Implementation 2: GPS Spoofing towards south and north
+## Implementation 2: GPS Spoofing towards south and north
 
 The script to spoof the copter in the north and south direction to alter magnetometer readings. This script can be found in spoofingScripts/SeconImplementation/NorthSouthSpoofing.py. The same steps apply from the second implemenation to run this script. 
 
