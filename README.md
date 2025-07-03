@@ -1,4 +1,4 @@
-# GPS Spoofing Project
+# Simulating GPS-spoofing of consumer UAVs as a side-channel remote control method
 
 This project demonstrates GPS spoofing using ArduCopter, MAVLink, and QGroundControl. It is designed to run on Ubuntu 22.04 hosted on a virtual machine (via UTM) on a MacBook Pro 2021 with an M1 chip.
 
