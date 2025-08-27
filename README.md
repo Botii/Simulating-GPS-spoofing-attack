@@ -101,17 +101,18 @@ After takeoff (step 5), you can switch to auto mode:
 
 1. **Launch the Simulation:**
     ```bash
-    sim_vehicle.py -v ArduCopter -L KSFO --console --map --out=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551
+    sim_vehicle.py -v ArduCopter -L KSFO -l -35.363261,149.165230,584.0,0.0 --console --map --out=udp:127.0.0.1:14550 --out=udp:127.0.0.1:14551
+
     ```
 2. **Switch Communication Protocol to MAVLink:**
     ```bash
-    param set GPS1_TYPE 14
+    param fetch GPS1_TYPE 14
     ```
 3. **Load the Fake GPS Module:**
     ```bash
-    load module fakegps
+    module load fakegps
     ```
-4. **Reboot the System.**
+4. **Reboot the System.** <- not required!
 5. **Controller Option:**
     - If you do not have a PS4 controller, use spoofingScripts/SeconImplementation/noController.py.
 6. **Wait** until all configurations and initialization processes are complete.
