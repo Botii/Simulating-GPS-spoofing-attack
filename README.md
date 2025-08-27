@@ -112,23 +112,22 @@ After takeoff (step 5), you can switch to auto mode:
     ```bash
     module load fakegps
     ```
-4. **Reboot the System.** <- not required!
-5. **Controller Option:**
+4. **Controller Option:**
     - If you do not have a PS4 controller, use spoofingScripts/SeconImplementation/noController.py.
-6. **Wait** until all configurations and initialization processes are complete.
-7. **Arm the Drone with Throttle 10:**
+5. **Wait** until all configurations and initialization processes are complete.
+6. **Arm the Drone with Throttle 10:**
     ```bash
     arm throttle 10
     ```
-8. **Set Flight Mode to Guided:**
+7. **Set Flight Mode to Guided:**
     ```bash
     mode guided
     ```
-9. **Initiate Takeoff (e.g., 10 meters):**
+8. **Initiate Takeoff (e.g., 10 meters):**
     ```bash
     takeoff 10
     ```
-10. **Start Spoofing:**
+9. **Start Spoofing:**
     - Right-click on the map and select **startSpoof**.
 
 > **Note:** If you wish to use a PS4 controller, connect it before starting the second implementation and run spoofingScripts/SeconImplementation/withController.py
